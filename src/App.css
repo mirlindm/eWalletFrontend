@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.new-buttons {
+  background-color: #E9967A !important;
+  border: 1px solid #d7dde8 !important;
+}
+.new-buttons:hover {
+  border: 0px solid #d7dde8;
+  color: #757f9a !important;
+  text-decoration: underline;    
+  background-color: #d7dde8 !important;
+}
+
+.ContentUnique {
+  
+  
+  width: 100%;
+  height: 100vh;
+  
+  padding: 50px;
+  margin: auto;
+  color: white;
+  font-weight: bolder;
+  font-size: large;
+  margin-bottom: 70px;
+}
