@@ -11,8 +11,8 @@ Technologies used: JavaScript ES6, React.js, Material-UI, React+Bootrsrap.
 
 Some UI Screenshots:
 
-![Screenshot](UI-1.png)
-![Screenshot](UI-2.png)
-![Screenshot](UI-3.png)
-![Screenshot](UI-4.png)
-![Screenshot](UI-5.png)
+![Screenshot](UI-1.PNG)
+![Screenshot](UI-2.PNG)
+![Screenshot](UI-3.PNG)
+![Screenshot](UI-4.PNG)
+![Screenshot](UI-5.PNG)
