@@ -223,11 +223,12 @@ deleteWalletHandler = (event) => {
 
 withdrawAmountHandler = (event) =>  {
   event.preventDefault();
+
   let now = new Date().toLocaleDateString();
   console.log(now.toString());
 
   let old_balance = this.state.walletBalance;
-  let amount = this.state.amountToDeposit;
+  let amount = this.state.amountToWithdraw;
   
   let requestBody = {
     id: Math.floor((Math.random() * 10) + 1),
@@ -240,22 +241,22 @@ withdrawAmountHandler = (event) =>  {
     }
   }
 
-  let new_balance = +old_balance + +amount;
+  let new_balance = +old_balance - +amount;
 
-  axios.post('http://localhost:8080/eWallet/transactions', requestBody, {
+  axios.put('http://localhost:8080/eWallet/transactions', requestBody, {
       "accept" : "application/json"
   })
       .then(response => {
           console.log(response);
-          if(response.status === 201) {       
-              NotificationManager.success(`Amount Deposited: €` + response.data.amount, response.statusText)             
+          if(response.status === 200) {       
+              NotificationManager.success(`Amount Withdrawn: €` + response.data.amount, response.statusText)             
               this.setState({
-                depositResponse: response.data,
+                withdrawalResponse: response.data,                
                 walletBalance: new_balance,              
                 });
                 setTimeout(() => {
                   this.setState({
-                    depositShowModal: false
+                    withdrawalShowModal: false
                   })
                 }, 1000)              
           } else {
@@ -290,7 +291,7 @@ withdrawAmountHandler = (event) =>  {
         
               <div style={{margin: "20px auto"}} className="col-sm-4">                             
                 
-              <h1 style={{textAlign: "center", color: "#7c795d", fontFamily: "Trocchi, serif", fontSize: "45px", margin: "10px 0" }}>Manage your eWallet</h1>
+              <h1 style={{textAlign: "center", color: "#7c795d", fontFamily: "Trocchi, serif", fontSize: "45px", margin: "10px 0" }}>Manage your eWallets</h1>
                     <Card style={{border: "1px solid #000000", }}>                         
                           <Card.Header style={{"textAlign": "center", backgroundColor: "#FF7F50"}}>
                               <Button onClick={this.createWalletHandler} className="new-buttons" variant="primary" 
@@ -323,7 +324,7 @@ withdrawAmountHandler = (event) =>  {
                                         </Card.Text>
                                           <ButtonGroup style={{width: "250px", marginRight: "auto", marginLeft: "auto"}} aria-label="Basic example">
                                             <Button onClick={this.depositHandleShow} variant="success">Deposit</Button>
-                                            <Button onClick={this.depositHandleShow} variant="warning">Withdraw</Button>
+                                            <Button onClick={this.withdrawHandleShow} variant="warning">Withdraw</Button>
                                             <Button variant="danger" onClick={this.deleteWalletHandler}>Delete</Button>
                                           </ButtonGroup>
                                       </Card.Body>
@@ -365,7 +366,7 @@ withdrawAmountHandler = (event) =>  {
                           </div> 
                         : null }
                           
-                            <Modal show={this.state.withdrawalShowModal} onHide={this.depositHandleClose}>
+                            <Modal show={this.state.depositShowModal} onHide={this.depositHandleClose}>
                               <Modal.Header closeButton>
                                 <Modal.Title>Deposit Amount</Modal.Title>
                               </Modal.Header>
@@ -408,8 +409,13 @@ withdrawAmountHandler = (event) =>  {
                                       placeholder="Enter your eWallet ID"
                                       aria-label="Amount (to the nearest euro)"
                                     />  
-                                    </InputGroup>                    
-
+                                    </InputGroup>
+                                    <InputGroup className="mb-3">  
+                                     <FormControl value={this.state.walletBalance}
+                                      placeholder="Enter your eWallet ID"
+                                      aria-label="Amount (to the nearest euro)"
+                                    />                    
+                                    </InputGroup>
                                     <InputGroup className="mb-3">
                                       <InputGroup.Prepend>
                                         <InputGroup.Text>&euro;</InputGroup.Text>
@@ -426,7 +432,7 @@ withdrawAmountHandler = (event) =>  {
                                   Cancel
                                 </Button>
                                 <Button variant="success" onClick={this.withdrawAmountHandler}>
-                                  Deposit
+                                  Withdraw
                                 </Button>
                               </Modal.Footer>
                             </Modal>
